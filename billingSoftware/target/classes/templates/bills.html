@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Generated Bills</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Additional styling if needed */
+    </style>
+</head>
+<body>
+    <section>
+        <h1>Generated Bills</h1>
+        
+          <!-- Display Notifications -->
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+        <!-- Search Input -->
+        <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by Customer Name or Item" onkeyup="searchBills()">
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Item</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="billsTable">
+                <tr th:each="bill : ${bills}">
+                    <td th:text="${bill.id}"></td>
+                    <td th:text="${bill.customerName}"></td>
+                    <td th:text="${bill.item}"></td>
+                    <td th:text="${bill.amount}"></td>
+                    <td th:text="${bill.date}"></td>
+                    <td>
+                        <a class="btn btn-outline-warning btn-sm" th:href="@{/edit-bill/{id}(id=${bill.id})}">Edit</a>
+                        <a class="btn btn-outline-danger btn-sm" th:href="@{/delete-bill/{id}(id=${bill.id})}" onclick="return confirm('Are you sure you want to delete this bill?');">Delete</a>
+                        <a class="btn btn-info" th:href="@{/download-bill/{id}(id=${bill.id})}">Download PDF</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
+    </section>
+
+    <script>
+        function searchBills() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const table = document.getElementById('billsTable');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let found = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j]) {
+                        if (cells[j].innerText.toLowerCase().includes(input)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                rows[i].style.display = found ? "" : "none";
+            }
+        }
+    </script>
+</body>
+</html>

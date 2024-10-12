@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Summary</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .bill-container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+        table {
+            margin: 0 auto;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <div class="bill-container">
+        <h1>Bill Details</h1>
+        <p><strong>Customer Name:</strong> <span th:text="${bill.customerName}"></span></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${bill.items}">
+                    <td th:text="${item.product.name}"></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${item.product.amount}"></td>
+                    <td th:text="${item.totalPrice}"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p><strong>Total Amount:</strong> <span th:text="${bill.totalAmount}"></span></p>
+        <p><strong>Date:</strong> <span th:text="${bill.date}"></span></p>
+        <a href="/" class="btn btn-primary">Back to Home</a>
+    </div>
+</section>
+</body>
+</html>

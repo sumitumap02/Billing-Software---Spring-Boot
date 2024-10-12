@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Generate Bill</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<section>
+    <h1>Generate Bill</h1>
+    <form th:action="@{/generate-bill/form}" method="post">
+        <input type="text" name="customerName" placeholder="Customer Name" required>
+        <input type="text" name="item" placeholder="Item" required>
+        <input type="number" name="amount" placeholder="Amount" required>
+        <input type="text" name="date" placeholder="Date" required>
+        <button type="submit">Generate Bill</button>
+    </form>
+    </section>
+</body>
+</html>

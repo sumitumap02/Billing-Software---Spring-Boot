@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <title>Print Bill</title>
+    <style>
+        /* Styles for print view */
+        @media print {
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .bill-container {
+                width: 100%;
+                margin: 0 auto;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<section>
+    <div class="bill-container">
+        <h1>Bill Details</h1>
+        <p><strong>Customer Name:</strong> <span th:text="${bill.customerName}"></span></p>
+        <p><strong>Item:</strong> <span th:text="${bill.item}"></span></p>
+        <p><strong>Amount:</strong> <span th:text="${bill.amount}"></span></p>
+        <p><strong>Date:</strong> <span th:text="${bill.date}"></span></p>
+    </div>
+    </section>
+</body>
+</html>

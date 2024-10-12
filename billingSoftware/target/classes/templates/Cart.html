@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script>
+        function addToCart() {
+            const productId = document.getElementById("productId").value;
+            const quantity = document.getElementById("quantity").value;
+
+            fetch(`/cart/add?productId=${productId}&quantity=${quantity}`, {
+                method: 'POST'
+            })
+            .then(response => response.text())
+            .then(() => {
+                loadCartItems();
+            });
+        }
+
+        function loadCartItems() {
+            fetch('/cart/items')
+                .then(response => response.json())
+                .then(items => {
+                    const cartItems = document.getElementById("cartItems");
+                    cartItems.innerHTML = '';
+
+                    items.forEach(item => {
+                        const row = `<tr>
+                                        <td>${item.product.item}</td>
+                                        <td>${item.quantity}</td>
+                                        <td>${item.product.amount}</td>
+                                        <td>${item.totalPrice}</td>
+                                    </tr>`;
+                        cartItems.innerHTML += row;
+                    });
+
+                    // Update total price
+                    fetch('/cart/total')
+                        .then(response => response.json())
+                        .then(total => {
+                            document.getElementById("totalPrice").innerText = total;
+                        });
+                });
+        }
+
+        window.onload = function() {
+            loadCartItems();
+        }
+    </script>
+</head>
+<body>
+<section>
+    <h1>Your Cart</h1>
+    <table id="cartTable">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="cartItems">
+            <!-- Items will be dynamically inserted here -->
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total Price</td>
+                <td id="totalPrice">0</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Add to Cart Form -->
+    <form id="addProductForm" onsubmit="event.preventDefault(); addToCart();">
+        <input type="text" id="productId" placeholder="Product ID" required>
+        <input type="number" id="quantity" placeholder="Quantity" required>
+        <button type="button" onclick="addToCart()">Add to Cart</button>
+    </form>
+
+    <!-- Generate Bill Section -->
+    <h2>Generate Bill</h2>
+    <form th:action="@{/generate-bill}" method="post">
+        <input type="text" name="customerName" placeholder="Customer Name" required>
+        <button type="submit">Generate Bill</button>
+    </form>
+</section>
+</body>
+</html>
